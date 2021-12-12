@@ -18,10 +18,10 @@ class CartController extends Controller
                     ->get();
 
         // flag for change of product in cart
-        $has_validate = CartManager::validate($cart);
+        $has_change = CartManager::validate($cart);
 
-        // reload cart model
-        if($has_validate) {
+        // reload cart model if cart data has change
+        if($has_change) {
             $cart = Cart::where('user_id', $request->user_id)
                         ->whereNotIn('status', [Cart::STATUS_ORDERED])
                         ->get();
