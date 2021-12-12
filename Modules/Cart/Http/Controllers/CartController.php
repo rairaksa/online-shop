@@ -27,6 +27,17 @@ class CartController extends Controller
                         ->get();
         }
 
-        return response()->json($cart);
+        if(!$cart) {
+            return response()->json([
+                'status'    => 400,
+                'message'   => 'Empty Cart',
+                'data'      => []
+            ]);
+        }
+
+        return response()->json([
+            'status' => 200,
+            'data' => $cart
+        ]);
     }
 }

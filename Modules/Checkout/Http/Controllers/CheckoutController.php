@@ -29,6 +29,17 @@ class CheckoutController extends Controller
                         ->get();
         }
 
-        return response()->json($cart);
+        if(!$cart) {
+            return response()->json([
+                'status'    => 200,
+                'message'   => 'Empty Checkout',
+                'data'      => []
+            ]); 
+        }
+        
+        return response()->json([
+            'status' => 200,
+            'data'   => $cart
+        ]);
     }
 }
