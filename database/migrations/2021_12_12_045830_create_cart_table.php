@@ -19,7 +19,7 @@ class CreateCartTable extends Migration
             $table->integer("user_id");
             $table->integer("product_id");
             $table->integer("quantity")->default(0);
-            $table->enum("status", ["ready", "out of stock", "deleted"]);
+            $table->enum("status", ["ready", "out of stock", "deleted", "ordered"]);
         });
     }
 

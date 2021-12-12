@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-use Modules\Cart\Http\Controllers\CartController;
+use Modules\Order\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +14,6 @@ use Modules\Cart\Http\Controllers\CartController;
 |
 */
 
-Route::middleware('api')->prefix('/cart')->group(function() {
-    Route::post('/', [CartController::class, 'index']);
+Route::middleware('api')->prefix('/order')->group(function() {
+    Route::post('/create', [OrderController::class, 'store']);
 });

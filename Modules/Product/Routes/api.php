@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Modules\Product\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/product', function (Request $request) {
-    return $request->user();
+Route::middleware('api')->prefix('/product')->group(function() {
+    Route::get('/', [ProductController::class, 'index']);
+    Route::get('/detail', [ProductController::class, 'detail']);
+    Route::post('/add-to-cart', [ProductController::class, 'add_to_cart']);
 });

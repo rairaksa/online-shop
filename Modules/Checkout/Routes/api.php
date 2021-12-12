@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Modules\Checkout\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/checkout', function (Request $request) {
-    return $request->user();
+Route::middleware('api')->prefix('/checkout')->group(function() {
+    Route::post('/', [CheckoutController::class, 'index']);
 });
