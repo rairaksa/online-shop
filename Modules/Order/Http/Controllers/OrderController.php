@@ -4,6 +4,7 @@ namespace Modules\Order\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use Exception;
 use Illuminate\Contracts\Support\Renderable;
@@ -48,11 +49,31 @@ class OrderController extends Controller
                 if($order->save()) {
                     // update carts.status on cart to ordered
                     foreach($cart as $value) {
+                        // add ordered product table order_products
+                        $create_order_product = new OrderProduct;
+
+                        $create_order_product->order_id = $order->id;
+                        $create_order_product->product_id = $value->product_id;
+                        $create_order_product->quantity = $value->quantity;
+                        $create_order_product->price = $value->product->price;
+                        $create_order_product->save();
+
                         // decrease quantity on product.quantity
                         $update_product = Product::find($value->product_id);
-
                         $update_product->quantity = $update_product->quantity - $value->quantity;
+
+                        // little prevention overload order on out of stock product
+                        if($update_product->quantity < 0) {
+                            DB::rollback();
+
+                            return response()->json([
+                                'status'    => 400,
+                                'message'   => 'Product out of stock'
+                            ]);
+                        }
+
                         $update_product->save();
+
 
                         // change cart.status to ordered
                         $update_cart = Cart::find($value->id);
